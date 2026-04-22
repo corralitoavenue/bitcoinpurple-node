@@ -17,17 +17,17 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential autotools-dev automake libtool pkg-config
+          sudo apt install -y build-essential autotools-dev automake libtool pkg-config g++-aarch64-linux-gnu
 
       - name: Build ARM64
         run: |
           ./autogen.sh
-          ./configure
+          ./configure --host=aarch64-linux-gnu --without-gui --disable-tests --disable-bench
           make -j$(nproc)
 
       - name: Package ARM64
         run: |
-          mkdir BitcoinPurple-node-aarch64-linux-gnu
+          mkdir -p BitcoinPurple-node-aarch64-linux-gnu
           cp src/bitcoinpurpled BitcoinPurple-node-aarch64-linux-gnu/
           tar -czvf BitcoinPurple-node-${GITHUB_REF_NAME}-aarch64-linux-gnu.tar.gz BitcoinPurple-node-aarch64-linux-gnu
 
@@ -48,12 +48,12 @@ jobs:
       - name: Build macOS
         run: |
           ./autogen.sh
-          ./configure
+          ./configure --without-gui --disable-tests --disable-bench
           make -j$(sysctl -n hw.ncpu)
 
       - name: Package macOS
         run: |
-          mkdir BitcoinPurple-node-osx64
+          mkdir -p BitcoinPurple-node-osx64
           cp src/bitcoinpurpled BitcoinPurple-node-osx64/
           tar -czvf BitcoinPurple-node-${GITHUB_REF_NAME}-osx64.tar.gz BitcoinPurple-node-osx64
 
