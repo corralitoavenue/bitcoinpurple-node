@@ -104,12 +104,11 @@ The total supply is capped at **1,000,000 BTCP**, ensuring long-term scarcity.
 ---
 
 ### 🔹 Fair Launch
-BitcoinPurple launched with **no premine**, ensuring fair and transparent distribution from the genesis block.
+BitcoinPurple launched with no premine, ensuring fair and transparent distribution from the genesis block.
 
-- Initial block reward: 1 BTCP  
-- Halving interval: 500,000 blocks  
-
----
+- Initial block reward: **1 BTCP**
+- Halving interval: **500,000 blocks**
+- Current block reward: **0.25 BTCP (approx., depending on network height)**
 
 ### 🔹 Coinbase Maturity
 Mining rewards require **100 confirmations** before being spendable.
