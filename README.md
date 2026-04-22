@@ -1,79 +1,135 @@
-BitcoinPurple Core integration/staging tree
-=====================================
+# BitcoinPurple Core (Integration / Staging Tree)
 
-https://bitcoincore.org
+This repository contains the official full node implementation of BitcoinPurple.
 
-For an immediately usable, binary version of the BitcoinPurple Core software, see
-https://bitcoincore.org/en/download/.
+BitcoinPurple is a decentralized cryptocurrency based on the Bitcoin protocol, designed to provide fast, secure, and low-cost transactions while preserving the core principles of decentralization and security.
 
-What is BitcoinPurple Core?
----------------------
+---
 
-BitcoinPurple Core connects to the BitcoinPurple peer-to-peer network to download and fully
-validate blocks and transactions. It also includes a wallet and graphical user
-interface, which can be optionally built.
+## ⚙️ Build Instructions
 
-Further information about BitcoinPurple Core is available in the [doc folder](/doc).
+To compile the node from source:
 
-License
--------
+```bash
+./autogen.sh
+./configure
+make
+```
 
-BitcoinPurple Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
+---
 
-Development Process
--------------------
+## 🚀 Running the Node
 
-The `master` branch is regularly built (see `doc/build-*.md` for instructions) and tested, but it is not guaranteed to be
-completely stable. [Tags](https://github.com/bitcoinpurple/bitcoinpurple/tags) are created
-regularly from release branches to indicate new official, stable release versions of BitcoinPurple Core.
+After compilation, the daemon can be started from the `src` directory.
 
-The https://github.com/bitcoinpurple-core/gui repository is used exclusively for the
-development of the GUI. Its master branch is identical in all monotree
-repositories. Release branches and tags do not exist, so please do not fork
-that repository unless it is for development reasons.
+```bash
+./bitcoinpurpled
+```
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
-and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
+---
 
-Testing
--------
+## ⚙️ Configuration
 
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
+The node is configured via a standard configuration file.
 
-### Automated Testing
+### 1. Create Configuration File
 
-Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled in configure) with: `make check`. Further details on running
-and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
+Create a file named `bitcoinpurple.conf`:
 
-There are also [regression and integration tests](/test), written
-in Python.
-These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
+```ini
+# Performance
+dbcache=512
+maxmempool=300
+maxconnections=64
 
-The CI (Continuous Integration) systems make sure that every pull request is built for Windows, Linux, and macOS,
-and that unit/sanity tests are run automatically.
+# RPC settings
+rpcuser=bitcoinpurpleuser
+rpcpassword=strongpassword
+rpcport=RPC_PORT
+rpcbind=127.0.0.1
+rpcallowip=127.0.0.1
 
-### Manual Quality Assurance (QA) Testing
+# Network
+port=P2P_PORT
+listen=1
+server=1
 
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
+# Data directory
+datadir=/path/to/your/datadir
 
-Translations
-------------
+# ZMQ
+zmqpubhashblock=tcp://127.0.0.1:28332
 
-Changes to translations as well as new translations can be submitted to
-[BitcoinPurple Core's Transifex page](https://www.transifex.com/bitcoinpurple/bitcoinpurple/).
+# Peer nodes
+addnode=node3.walletbuilders.com
+addnode=172.77.254.247
+addnode=176.116.187.125
+addnode=185.210.226.109
+addnode=185.250.240.81
+addnode=185.250.243.159
+addnode=196.133.152.35
+addnode=2.56.245.17
+addnode=31.207.228.208
+addnode=35.144.68.73
+addnode=45.131.66.138
+```
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+> Replace `RPC_PORT` and `P2P_PORT` with the correct values for your deployment.
 
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
-# bitcoinpurple-node
+---
+
+### 2. Start the Node
+
+```bash
+./bitcoinpurpled -conf=/path/to/bitcoinpurple.conf
+```
+
+---
+
+## 🔧 Features
+
+### 🔹 Proof of Work (SHA-256)
+BitcoinPurple uses the SHA-256 Proof of Work algorithm, compatible with ASIC mining hardware.
+
+---
+
+### 🔹 Fast Block Time
+BitcoinPurple is designed with a **target block time of 1 minute**, enabling fast transaction confirmations.
+
+---
+
+### 🔹 Fixed Supply
+The total supply is capped at **1,000,000 BTCP**, ensuring long-term scarcity.
+
+---
+
+### 🔹 Fair Launch
+BitcoinPurple launched with **no premine**, ensuring fair and transparent distribution from the genesis block.
+
+- Initial block reward: 1 BTCP  
+- Halving interval: 500,000 blocks  
+
+---
+
+### 🔹 Coinbase Maturity
+Mining rewards require **100 confirmations** before being spendable.
+
+---
+
+### 🔹 Difficulty Adjustment
+BitcoinPurple includes a dynamic difficulty adjustment mechanism to maintain stable block production under varying network conditions.
+
+---
+
+## 📄 Notes
+
+- Ensure your node is fully synced before use.  
+- Keep RPC credentials secure.  
+- Open required ports if running a public node.  
+- Always use the latest official version.
+
+---
+
+## 📜 License
+
+See the LICENSE file for details.
