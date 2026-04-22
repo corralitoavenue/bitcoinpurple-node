@@ -1,0 +1,64 @@
+name: BitcoinPurple ARM + macOS builds
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+
+  build-arm64:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential autotools-dev automake libtool pkg-config
+
+      - name: Build ARM64
+        run: |
+          ./autogen.sh
+          ./configure
+          make -j$(nproc)
+
+      - name: Package ARM64
+        run: |
+          mkdir BitcoinPurple-node-aarch64-linux-gnu
+          cp src/bitcoinpurpled BitcoinPurple-node-aarch64-linux-gnu/
+          tar -czvf BitcoinPurple-node-${GITHUB_REF_NAME}-aarch64-linux-gnu.tar.gz BitcoinPurple-node-aarch64-linux-gnu
+
+      - name: Upload ARM64 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: arm64-build
+          path: "*.tar.gz"
+
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build macOS
+        run: |
+          ./autogen.sh
+          ./configure
+          make -j$(sysctl -n hw.ncpu)
+
+      - name: Package macOS
+        run: |
+          mkdir BitcoinPurple-node-osx64
+          cp src/bitcoinpurpled BitcoinPurple-node-osx64/
+          tar -czvf BitcoinPurple-node-${GITHUB_REF_NAME}-osx64.tar.gz BitcoinPurple-node-osx64
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: "*.tar.gz"
